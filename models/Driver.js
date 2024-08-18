@@ -2,6 +2,15 @@ const mongoose = require("mongoose");
 
 const driverSchema = new mongoose.Schema(
   {
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
     firstName: {
       type: String,
       required: true,
@@ -12,6 +21,12 @@ const driverSchema = new mongoose.Schema(
     },
     age: {
       type: Number,
+      validate: {
+        validator: function (v) {
+          return v >= 18 && v <= 65;
+        },
+        message: "Age is not valid",
+      },
       required: true,
     },
     vehicle: {
@@ -21,14 +36,18 @@ const driverSchema = new mongoose.Schema(
     },
     nationalId: {
       type: String,
+      validate: {
+        validator: function (v) {
+          return /^\d{14}$/.test(v);
+        },
+        message: "National ID is not valid",
+      },
       required: true,
       unique: true,
     },
-    salary: {
-      type: Number,
-      required: true,
-    },
-    orders: [{ type: mongoose.Schema.Types.ObjectId, ref: "Order" }],
+    orders: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "Order", default: [] },
+    ],
   },
   { timestamps: true }
 );
