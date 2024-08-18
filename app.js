@@ -2,6 +2,7 @@ const express = require("express");
 const config = require("./config/config");
 const connectDB = require("./config/db");
 
+//TODO: handle async connection
 connectDB();
 
 const app = express();
