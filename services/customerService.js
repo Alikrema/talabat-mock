@@ -9,7 +9,10 @@ const signup = async (createCustomerDto) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     createCustomerDto.password = hashedPassword;
     const customer = await customerRepo.createCustomer(createCustomerDto);
-    const token = jwt.sign({ id: customer._id }, config.jwt.secret);
+    const token = jwt.sign(
+      { id: customer._id, type: "customer" },
+      config.jwt.secret
+    );
     return { customer, token };
   } catch (error) {
     console.error("Error in signup:", error);
